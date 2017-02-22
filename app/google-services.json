@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "53573877422",
+    "firebase_url": "https://frilo-bd653.firebaseio.com",
+    "project_id": "frilo-bd653",
+    "storage_bucket": "frilo-bd653.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53573877422:android:16fc035448a43b0a",
+        "android_client_info": {
+          "package_name": "com.asyraf.frilo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53573877422-l1bm1379qjt9o1jhqr1oqqvvk8b3ncst.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6r6JhJyL5CILZqXHJDy6NbQMIh9du-ec"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
