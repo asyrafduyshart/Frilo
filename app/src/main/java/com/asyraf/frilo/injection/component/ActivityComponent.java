@@ -7,6 +7,7 @@ import com.asyraf.frilo.ui.base.BaseActivity;
 import com.asyraf.frilo.ui.detail.DetailActivity;
 import com.asyraf.frilo.ui.login.LoginActivity;
 import com.asyraf.frilo.ui.main.MainActivity;
+import com.asyraf.frilo.ui.register.RegisterActivity;
 
 @PerActivity
 @Subcomponent(modules =ActivityModule.class)
@@ -18,4 +19,6 @@ public interface ActivityComponent {
     void inject(DetailActivity detailActivity);
 
     void inject(LoginActivity loginActivity);
+
+    void inject(RegisterActivity registerActivity);
 }

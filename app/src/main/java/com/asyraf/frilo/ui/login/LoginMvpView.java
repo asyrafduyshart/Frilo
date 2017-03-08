@@ -8,13 +8,13 @@ import com.asyraf.frilo.ui.base.MvpView;
 
 public interface LoginMvpView extends MvpView {
 
-    void registerSuccess();
-
-    void registerFailed();
-
     void loginSuccess();
 
     void loginFailed();
+
+    void needRegister();
+
+    void alreadyFacebookVerified(boolean verified);
 
     void showProgress(boolean show);
 

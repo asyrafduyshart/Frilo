@@ -1,11 +1,15 @@
 package com.asyraf.frilo.data;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.asyraf.frilo.data.model.AuthResponse;
 import com.asyraf.frilo.data.model.Pokemon;
+import com.asyraf.frilo.data.model.Response;
+import com.asyraf.frilo.data.model.Statistic;
 import com.asyraf.frilo.data.remote.MvpStarterService;
 import io.reactivex.Single;
 
@@ -30,5 +34,14 @@ public class DataManager {
     public Single<Pokemon> getPokemon(String name) {
         return mMvpStarterService.getPokemon(name);
     }
+
+    public Single<Response> registerUser(String full_name,String email,String license,String device_token,String kit_token){
+        return mMvpStarterService.registerUser(ServerStatic.ACTION_REGISTER,full_name,email,license,ServerStatic.DEVICE_TYPE,device_token,kit_token);
+    }
+
+    public Single<AuthResponse> authServer(String kit_token){
+        return mMvpStarterService.authServer(ServerStatic.ACTION_AUTH_LOGIN, kit_token);
+    }
+
 
 }
