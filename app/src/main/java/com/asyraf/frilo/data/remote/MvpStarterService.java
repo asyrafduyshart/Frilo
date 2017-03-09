@@ -2,6 +2,7 @@ package com.asyraf.frilo.data.remote;
 
 
 import com.asyraf.frilo.data.model.AuthResponse;
+import com.asyraf.frilo.data.model.ParkLocationResponse;
 import com.asyraf.frilo.data.model.Pokemon;
 import com.asyraf.frilo.data.model.PokemonListResponse;
 import com.asyraf.frilo.data.model.Response;
@@ -28,6 +29,9 @@ public interface MvpStarterService {
 
     @FormUrlEncoded @POST ("globe/api/")
     Single<AuthResponse> authServer(@Field("action") String action, @Field("kit_token") String kit_token);
+
+    @GET("park/api")
+    Single<ParkLocationResponse> getOpenParkingLocation(@Query("access_token") String access_token,@Query("action") String action,@Query("app_type") String app_type,@Query("latitude") double latitude,@Query("longitude") double longitude,@Query("vehicle") int vehicle);
 
 
 }

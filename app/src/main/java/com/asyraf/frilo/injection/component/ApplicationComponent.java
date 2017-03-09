@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import com.asyraf.frilo.data.DataManager;
 import com.asyraf.frilo.data.FirebaseManager;
+import com.asyraf.frilo.data.local.PreferencesHelper;
 import com.asyraf.frilo.data.remote.MvpStarterService;
 import com.asyraf.frilo.injection.ApplicationContext;
 import com.asyraf.frilo.injection.module.ApplicationModule;
@@ -26,4 +27,6 @@ public interface ApplicationComponent {
     FirebaseManager firebasemanager();
 
     MvpStarterService mvpBoilerplateService();
+
+    PreferencesHelper preferenceHelper();
 }

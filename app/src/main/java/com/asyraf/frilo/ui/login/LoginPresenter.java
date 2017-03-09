@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.asyraf.frilo.data.DataManager;
 import com.asyraf.frilo.data.FirebaseManager;
+import com.asyraf.frilo.data.local.PreferencesHelper;
 import com.asyraf.frilo.injection.ConfigPersistent;
 import com.asyraf.frilo.ui.base.BasePresenter;
 import com.asyraf.frilo.util.rx.scheduler.SchedulerUtils;
@@ -28,10 +29,12 @@ import timber.log.Timber;
 public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     DataManager mDataManager;
+    PreferencesHelper mPref;
 
     @Inject
-    public LoginPresenter(DataManager mDataManager) {
+    public LoginPresenter(DataManager mDataManager,PreferencesHelper mPref) {
         this.mDataManager = mDataManager;
+        this.mPref = mPref;
     }
 
     @Override
@@ -62,6 +65,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
                 .subscribe(authResponse -> {
                     getMvpView().showProgress(false);
                     if (authResponse.status == 200) {
+                        mPref.setTokenToServer(authResponse.data.accessToken);
                         getMvpView().loginSuccess();
                     } else if (authResponse.status == 404) {
                         getMvpView().needRegister();

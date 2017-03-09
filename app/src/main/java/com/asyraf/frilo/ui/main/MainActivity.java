@@ -1,31 +1,33 @@
 package com.asyraf.frilo.ui.main;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+
+import com.asyraf.frilo.Manifest;
 import com.asyraf.frilo.R;
+import com.asyraf.frilo.data.model.ParkLocationResponse;
 import com.asyraf.frilo.ui.base.BaseActivity;
 import com.asyraf.frilo.ui.common.ErrorView;
-import com.asyraf.frilo.ui.detail.DetailActivity;
+import com.asyraf.frilo.util.Utils;
+import com.github.nitrico.mapviewpager.MapViewPager;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import de.mateware.snacky.Snacky;
 import timber.log.Timber;
 
-public class MainActivity extends BaseActivity implements MainMvpView, PokemonAdapter.ClickListener,
-        ErrorView.ErrorListener {
+public class MainActivity extends BaseActivity implements MainMvpView,
+        ErrorView.ErrorListener, MapViewPager.Callback {
 
-    private static final int POKEMON_COUNT = 20;
-
-    @Inject
-    PokemonAdapter mPokemonAdapter;
     @Inject
     MainPresenter mMainPresenter;
 
@@ -33,32 +35,44 @@ public class MainActivity extends BaseActivity implements MainMvpView, PokemonAd
     ErrorView mErrorView;
     @BindView(R.id.progress)
     ProgressBar mProgress;
-    @BindView(R.id.recycler_pokemon)
-    RecyclerView mPokemonRecycler;
     @BindView(R.id.swipe_to_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+
+    private MapViewPager mvp;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         mMainPresenter.attachView(this);
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                .subscribe(granted ->{
+                    if (granted){
+
+                    }else{
+
+                    }
+
+                });
 
         setSupportActionBar(mToolbar);
 
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.primary);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.white);
-        mSwipeRefreshLayout.setOnRefreshListener(() -> mMainPresenter.getPokemon(POKEMON_COUNT));
-
-        mPokemonAdapter.setClickListener(this);
-        mPokemonRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mPokemonRecycler.setAdapter(mPokemonAdapter);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> mMainPresenter.getParkingLocation(-6.17732,106.8105243,1));
 
         mErrorView.setErrorListener(this);
 
-        mMainPresenter.getPokemon(POKEMON_COUNT);
+        mMainPresenter.getParkingLocation(-6.17732,106.8105243,1);
     }
 
     @Override
@@ -73,27 +87,29 @@ public class MainActivity extends BaseActivity implements MainMvpView, PokemonAd
     }
 
     @Override
-    public void showPokemon(List<String> pokemon) {
-        mPokemonAdapter.setPokemon(pokemon);
-        mPokemonAdapter.notifyDataSetChanged();
+    public void showParkLocation(ParkLocationResponse parkLocationResponse) {
 
-        mPokemonRecycler.setVisibility(View.VISIBLE);
+        viewPager.setPageMargin(Utils.dp(this,10));
+        Utils.setMargins(viewPager, 0, 0, 0, Utils.getNavigationBarHeight(this));
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+
+        mvp = new MapViewPager.Builder(this)
+                .mapFragment(mapFragment)
+                .viewPager(viewPager)
+                .position(1)
+                .adapter(new MainMapAdapter(getSupportFragmentManager(),parkLocationResponse))
+                .callback(this)
+                .build();
+
+
         mSwipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showProgress(boolean show) {
         if (show) {
-            if (mPokemonRecycler.getVisibility() == View.VISIBLE
-                    && mPokemonAdapter.getItemCount() > 0) {
-                mSwipeRefreshLayout.setRefreshing(true);
-            } else {
-                mProgress.setVisibility(View.VISIBLE);
-
-                mPokemonRecycler.setVisibility(View.GONE);
-                mSwipeRefreshLayout.setVisibility(View.GONE);
-            }
-
             mErrorView.setVisibility(View.GONE);
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
@@ -102,20 +118,30 @@ public class MainActivity extends BaseActivity implements MainMvpView, PokemonAd
     }
 
     @Override
+    public void showServerError(String message) {
+        Snacky.builder().setActivty(this).info().setText(message).setAction("Add Vehicle", v -> {
+
+        }).setDuration(Snacky.LENGTH_INDEFINITE).show();
+    }
+
+    @Override
     public void showError(Throwable error) {
-        mPokemonRecycler.setVisibility(View.GONE);
         mSwipeRefreshLayout.setVisibility(View.GONE);
         mErrorView.setVisibility(View.VISIBLE);
         Timber.e(error, "There was an error retrieving the pokemon");
     }
 
     @Override
-    public void onPokemonClick(String pokemon) {
-        startActivity(DetailActivity.getStartIntent(this, pokemon));
+    public void onReloadData() {
+        mMainPresenter.getParkingLocation(-6.17732,106.8105243,1);
     }
 
     @Override
-    public void onReloadData() {
-        mMainPresenter.getPokemon(POKEMON_COUNT);
+    public void onMapViewPagerReady() {
+        mvp.getMap().setPadding(
+                0,
+                Utils.dp(this, 40),
+                Utils.getNavigationBarWidth(this),
+                viewPager.getHeight() + Utils.getNavigationBarHeight(this));
     }
 }

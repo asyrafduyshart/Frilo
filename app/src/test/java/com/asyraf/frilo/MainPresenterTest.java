@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.asyraf.frilo.common.TestDataFactory;
 import com.asyraf.frilo.data.DataManager;
+import com.asyraf.frilo.data.local.PreferencesHelper;
 import com.asyraf.frilo.ui.main.MainMvpView;
 import com.asyraf.frilo.ui.main.MainPresenter;
 import com.asyraf.frilo.util.RxSchedulersOverrideRule;
@@ -35,6 +36,10 @@ public class MainPresenterTest {
     MainMvpView mMockMainMvpView;
     @Mock
     DataManager mMockDataManager;
+
+    @Mock
+    PreferencesHelper mPref;
+
     private MainPresenter mMainPresenter;
 
     @Rule
@@ -42,7 +47,7 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() {
-        mMainPresenter = new MainPresenter(mMockDataManager);
+        mMainPresenter = new MainPresenter(mMockDataManager,mPref);
         mMainPresenter.attachView(mMockMainMvpView);
     }
 
@@ -57,10 +62,10 @@ public class MainPresenterTest {
         when(mMockDataManager.getPokemonList(10))
                 .thenReturn(Single.just(pokemonList));
 
-        mMainPresenter.getPokemon(10);
+//        mMainPresenter.getParkingLocation(10);
 
         verify(mMockMainMvpView, times(2)).showProgress(anyBoolean());
-        verify(mMockMainMvpView).showPokemon(pokemonList);
+//        verify(mMockMainMvpView).showParkLocation(pokemonList);
         verify(mMockMainMvpView, never()).showError(new RuntimeException());
 
     }
@@ -70,11 +75,11 @@ public class MainPresenterTest {
         when(mMockDataManager.getPokemonList(10))
                 .thenReturn(Single.error(new RuntimeException()));
 
-        mMainPresenter.getPokemon(10);
+//        mMainPresenter.getParkingLocation(10);
 
         verify(mMockMainMvpView, times(2)).showProgress(anyBoolean());
         verify(mMockMainMvpView).showError(any(Throwable.class));
-        verify(mMockMainMvpView, never()).showPokemon(ArgumentMatchers.anyList());
+//        verify(mMockMainMvpView, never()).showParkLocation(ArgumentMatchers.anyList());
     }
 
 }

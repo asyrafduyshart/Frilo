@@ -3,6 +3,7 @@ package com.asyraf.frilo.ui.register;
 import android.util.Log;
 
 import com.asyraf.frilo.data.DataManager;
+import com.asyraf.frilo.data.local.PreferencesHelper;
 import com.asyraf.frilo.injection.ConfigPersistent;
 import com.asyraf.frilo.ui.base.BasePresenter;
 import com.asyraf.frilo.util.rx.scheduler.SchedulerUtils;
@@ -19,10 +20,12 @@ import javax.inject.Inject;
 @ConfigPersistent
 public class RegisterPresenter extends BasePresenter<RegisterMvpView> {
     private final DataManager mDataManager;
+    private final PreferencesHelper mPref;
 
     @Inject
-    public RegisterPresenter(DataManager dataManager) {
+    public RegisterPresenter(DataManager dataManager,PreferencesHelper mPrefHelper) {
         mDataManager = dataManager;
+        mPref = mPrefHelper;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class RegisterPresenter extends BasePresenter<RegisterMvpView> {
                     // It is possible to ask isAdded() in the fragment, but it's better to ask in the presenter
                     getMvpView().showProgress(false);
                     if (response.status == 200){
+                        mPref.setTokenToServer(response.data.accessToken);
                         getMvpView().registerSuccess();
                     }else{
                         getMvpView().registerFailed();

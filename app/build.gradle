@@ -106,8 +106,8 @@ retrolambda {
 }
 
 dependencies {
-    final PLAY_SERVICES_VERSION = '10.0.1'
-    final SUPPORT_LIBRARY_VERSION = '25.1.0'
+    final PLAY_SERVICES_VERSION = '10.2.0'
+    final SUPPORT_LIBRARY_VERSION = '25.2.0'
     final RETROFIT_VERSION = '2.1.0'
     final OKHTTP_VERSION = '3.5.0'
     final DAGGER_VERSION = '2.8'
@@ -148,6 +148,8 @@ dependencies {
 
     //View Third Party
     compile 'com.github.devlight:infinitecycleviewpager:1.0.2'
+    compile 'com.github.nitrico.mapviewpager:mapviewpager:1.0.0'
+    compile 'com.github.matecode:Snacky:1.0.2'
 
     compile "com.squareup.sqlbrite:sqlbrite:$SQLBRITE_VERSION"
     compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
@@ -165,7 +167,7 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:2.0.1"
 
     //RxPermission for easy runtime permission management
-//    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
 
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     compile "com.jakewharton.timber:timber:$TIMBER_VERSION"

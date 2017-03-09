@@ -1,11 +1,16 @@
 package com.asyraf.frilo.data.model;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("com.robohorse.robopojogenerator")
-public class Response{
+public class ParkLocationResponse{
+
+	@SerializedName("data")
+	@Expose
+	public List<DataItem> data;
 
 	@SerializedName("message")
 	@Expose
@@ -15,7 +20,13 @@ public class Response{
 	@Expose
 	public int status;
 
-	@SerializedName("data")
-	@Expose
-	public Data data;
+	@Override
+ 	public String toString(){
+		return 
+			"ParkLocationResponse{" + 
+			"data = '" + data + '\'' + 
+			",message = '" + message + '\'' + 
+			",status = '" + status + '\'' + 
+			"}";
+		}
 }

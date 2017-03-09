@@ -9,7 +9,9 @@ public class ServerStatic {
     public static int DEVICE_TYPE = 0;
 
     public static String ACTION_REGISTER = "REGISTER";
-
     public static String ACTION_AUTH_LOGIN = "LOGIN";
+    public static String ACTION_GET_PARKING_LOCATION = "GETPARKINGLOTLOCATION";
+
+    public static String TYPE_DRIVER = "DRIVER";
 
 }

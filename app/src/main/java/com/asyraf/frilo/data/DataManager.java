@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.asyraf.frilo.data.model.AuthResponse;
+import com.asyraf.frilo.data.model.ParkLocationResponse;
 import com.asyraf.frilo.data.model.Pokemon;
 import com.asyraf.frilo.data.model.Response;
 import com.asyraf.frilo.data.model.Statistic;
@@ -42,6 +43,11 @@ public class DataManager {
     public Single<AuthResponse> authServer(String kit_token){
         return mMvpStarterService.authServer(ServerStatic.ACTION_AUTH_LOGIN, kit_token);
     }
+
+    public Single<ParkLocationResponse> getParkLocation(String access_token,double latitude,double longitude,int vehicle){
+        return mMvpStarterService.getOpenParkingLocation(access_token,ServerStatic.ACTION_GET_PARKING_LOCATION,ServerStatic.TYPE_DRIVER,latitude,longitude,vehicle);
+    }
+
 
 
 }
