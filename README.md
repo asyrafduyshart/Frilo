@@ -1,9 +1,5 @@
 # Frilo
 
-
-An MVP Boilerplate to save me having to create the same project over from scratch every time! :)
-
-
 ## This project uses:
 - [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 - [Retrofit](http://square.github.io/retrofit/) / [OkHttp](http://square.github.io/okhttp/)
