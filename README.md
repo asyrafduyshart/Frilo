@@ -2,10 +2,7 @@
 
 
 An MVP Boilerplate to save me having to create the same project over from scratch every time! :)
-<p align="center">
-  <img src="http://g.recordit.co/L5selg7aIv.gif" width="250">
-  <img src="http://g.recordit.co/7JNqTQMwLS.gif">
-</p>
+
 
 ## This project uses:
 - [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
